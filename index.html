@@ -9,8 +9,33 @@
 	<script src="./index.js" type="module"></script>
 </head>
 <body>
+	<header class="header">
+		<div class="header_hero">
+			<h1 class="header_hero_title">2048</h1>
+			<p>Join the tiles, get to <span class="text_bold">2048!</span></p>
+			<p class="text_bold text_em-border"><a href="#rule">How to play →</a></p>
+		</div>
+		<div>
+			<div class="score-area">
+				<div class="score-block">
+					<h3 class="score-block_title">Score</h3>
+					<h2 class="score-block_number">0</h2>
+				</div>
+				<div class="score-block">
+					<h3 class="score-block_title">Best</h3>
+					<h2 class="score-block_number">6500</h2>
+				</div>
+			</div>
+			<div class="new-game_btn">New Game</div>
+		</div>
+	</header>
 	<div id="game-board">
 	</div>
-
+	<div id="rule" class="rule-area">
+		<p><span class="text_bold">HOW TO PLAY:</span> Use your <span class="text_bold">arrow keys</span>
+		to move the tiles. Tiles with the same number <span class="text_bold">merge into one</span>
+		when they touch. Add them up to reach <span class="text_bold">2048!</span></p>
+		<p class="text_bold text_em-border"><a href="#game-board">Start playing →</a></p>
+	</div>
 </body>
 </html>

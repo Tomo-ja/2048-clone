@@ -5,6 +5,7 @@ const gameBoard = document.getElementById("game-board")
 
 const grid = new Grid(gameBoard)
 
+// game always start with 2 tiles
 grid.randomEmptyCell().tile = new Tile(gameBoard)
 grid.randomEmptyCell().tile = new Tile(gameBoard)
 setupInput()
@@ -16,10 +17,13 @@ function setupInput(){
 async function handleInput(e){
 	switch (e.key){
 		case "ArrowUp":
+			// if there is no block moving to the direction user press, 
+			// skip everything and wait next key press
 			if(!canMoveUp()){
 				setupInput()
 				return
 			}
+			// return resolve when all block's animation is done
 			await moveUp()
 			break
 		case "ArrowDown":
@@ -45,12 +49,14 @@ async function handleInput(e){
 			break
 		default:
 			setupInput()
-			return			
+			return
 	}
 
 	grid.cells.forEach(cell => cell.margeTiles())
+	// each move makes new tile
 	const newTile = new Tile(gameBoard)
 	grid.randomEmptyCell().tile = newTile
+	// if user can't make any move then, lost
 	if(!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()){
 		console.log("lose")
 		newTile.waitForTransition(true).then(()=>{
@@ -61,6 +67,7 @@ async function handleInput(e){
 	setupInput()
 }
 
+// to move by different order, pass different order of cells
 function moveUp(){
 	return slideTiles(grid.cellsByColum)
 }
@@ -76,24 +83,32 @@ function moveRight(){
 
 function slideTiles (cells) {
 	return Promise.all(
+		// group represent an array having cells in same either row or column
 		cells.flatMap(group=>{
 			const promises = []
+			// don't do any thing on a cell already on edge
 			for(let i=1; i< group.length; i ++){
 				const cell = group[i]
 				let lastValidCell = null
+				// determine a cell can move until where
 				for(let j = i -1; j >= 0; j--){
 					const moveToCell = group[j]
-					if(cell.tile == null) continue
+					// cell doesn't have tile then evaluate next cell
+					if(cell.tile == null) break
+					// when hit other tile and can't be marge then evaluate next cell
 					if(!moveToCell.canAccept(cell.tile)) break
 					lastValidCell = moveToCell
 				}
+				// when cell has capacity of movement, lastValidCell is not null
 				if(lastValidCell != null){
 					promises.push(cell.tile.waitForTransition())
+					// if the cell tile will go has tile already, do marge
 					if(lastValidCell.tile != null){
 						lastValidCell.margeTile = cell.tile
-					}else{
+					}else{ //move tile dom onto new cell
 						lastValidCell.tile = cell.tile
 					}
+					// delete tile from previous cell
 					cell.tile = null
 				}
 			}
@@ -101,6 +116,7 @@ function slideTiles (cells) {
 		})
 	)
 }
+// check at least one movement blok can make
 function canMoveUp(){
 	return canMove(grid.cellsByColum)
 }
@@ -117,6 +133,7 @@ function canMoveRight(){
 function canMove(cells){
 	return cells.some(group =>{
 		return group.some((cell, index)=>{
+			// when cell is on edge
 			if(index === 0) return false
 			if(cell.tile == null) return false
 			const moveToCell = group[index - 1]

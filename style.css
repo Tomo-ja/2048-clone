@@ -2,30 +2,97 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: Arial;
+  font-family: "Open Sans", sans-serif;
 }
-body {
-  background-color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+h1,
+h2,
+h3,
+p {
   margin: 0;
-  font-size: 7.5vmin;
 }
+/* ----------------------------------------------------------------------------------- */
+
+body {
+  background-color: #faf8ef;
+  width: 495px;
+  margin: 30px auto;
+}
+a {
+  all: unset;
+}
+p {
+  color: #776e65;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.65;
+}
+.text_bold {
+  font-weight: 700;
+}
+.text_em-border {
+  text-decoration: underline;
+}
+/* ----------------------------------------------------------------------------------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+.header_hero_title {
+  color: #776e65;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 100px;
+}
+.score-area {
+  display: flex;
+  justify-content: end;
+  margin-bottom: 65px;
+}
+.score-block {
+  margin-left: 10px;
+  padding: 5px 20px 2px 20px;
+  background-color: #bbac9f;
+  border-radius: 5px;
+  text-align: center;
+}
+.score-block_title {
+  color: #eee4da;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.score-block_number {
+  color: #faf8ef;
+  font-size: 25px;
+  font-weight: 700;
+}
+.new-game_btn {
+  width: 128px;
+  margin-left: auto;
+  padding: 10px;
+  background-color: #8f7a66;
+  border-radius: 5px;
+  color: #f9f6f2;
+  text-align: center;
+  cursor: pointer;
+}
+/* ----------------------------------------------------------------------------------- */
+/* variable will come from javascript */
 #game-board {
   display: grid;
   grid-template-rows: repeat(var(--grid-size), var(--cell-size));
   grid-template-columns: repeat(var(--grid-size), var(--cell-size));
-  background-color: #ccc;
+  background-color: #bbac9f;
   gap: var(--cell-gap);
-  border-radius: 1vmin;
+  border-radius: 7.5px;
   padding: var(--cell-gap);
+  margin-bottom: 30px;
   position: relative;
+  font-size: 40px;
 }
 .cell {
-  background-color: #aaa;
-  border-radius: 1vmin;
+  background-color: #ccc0b3;
+  border-radius: 7.5px;
 }
 
 .tile {
@@ -36,7 +103,7 @@ body {
   background-color: red;
   width: var(--cell-size);
   height: var(--cell-size);
-  border-radius: 1vmin;
+  border-radius: 7.5px;
   top: calc(
     var(--y) * var(--cell-size) + var(--cell-gap) + var(--cell-gap) * var(--y)
   );
@@ -44,8 +111,8 @@ body {
     var(--x) * var(--cell-size) + var(--cell-gap) + var(--cell-gap) * var(--x)
   );
   font-weight: bold;
-  background-color: hsl(200, 50%, var(--background-lightness));
-  color: hsl(200, 25%, var(--text-lightness));
+  background-color: hsl(145, 90%, var(--background-lightness));
+  color: hsl(145, 60%, var(--text-lightness));
   animation: popUp 200ms ease-in-out;
   transition: 100ms ease-in-out;
 }
@@ -58,4 +125,10 @@ body {
     opacity: 1;
     transform: scale(1);
   }
+}
+/* ----------------------------------------------------------------------------------- */
+.rule-area {
+  width: 100%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d8d4d0;
 }
