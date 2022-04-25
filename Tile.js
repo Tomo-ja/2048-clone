@@ -1,6 +1,4 @@
 
-
-
 export default class Tile{
 	#tileElement
 	#x
