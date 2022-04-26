@@ -5,7 +5,7 @@ export default class Tile{
 
 	constructor(tileContainer, value = Math.random() > .5 ? 2 : 4){
 		this.#tileElement = document.createElement("div")
-		this.#tileElement.classList.add("tile")
+		this.#tileElement.classList.add("game-board_tile")
 		tileContainer.append(this.#tileElement)
 		this.value = value // go setter automatically to init set up of dom design
 	}

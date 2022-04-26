@@ -58,9 +58,8 @@ async function handleInput(e){
 	grid.randomEmptyCell().tile = newTile
 	// if user can't make any move then, lost
 	if(!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()){
-		console.log("lose")
 		newTile.waitForTransition(true).then(()=>{
-				alert("You lose")
+			displayGameOver()
 			})
 		return
 	}
@@ -140,4 +139,19 @@ function canMove(cells){
 			return moveToCell.canAccept(cell.tile)
 		})
 	})
+}
+
+function displayGameOver(){
+	const gameOverContainer = document.createElement("div")
+	gameOverContainer.classList.add("game-board_game-over")
+	const gameOverText = document.createElement("h1")
+	gameOverText.classList.add("game-board_game-over_text")
+	gameOverText.innerText = "Game Over"
+	const gameOverBtn = document.createElement("div")
+	gameOverBtn.classList.add("game-board_game-over_btn")
+	gameOverBtn.innerText = "Try again"
+	gameOverContainer.appendChild(gameOverText)
+	gameOverContainer.appendChild(gameOverBtn)
+	gameBoard.appendChild(gameOverContainer)
+	gameOverBtn.addEventListener("click", ()=>{console.log("work")})
 }
