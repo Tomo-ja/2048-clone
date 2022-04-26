@@ -1,15 +1,24 @@
 import Grid from "./Grid.js"
 import Tile from "./Tile.js"
 
+const newGameBtn = document.getElementById("new-game_btn")
+newGameBtn.addEventListener("click", ()=>{initGame()})
 const gameBoard = document.getElementById("game-board")
+let grid = null
 
-const grid = new Grid(gameBoard)
-
+initGame(true)
 // game always start with 2 tiles
-grid.randomEmptyCell().tile = new Tile(gameBoard)
-grid.randomEmptyCell().tile = new Tile(gameBoard)
 setupInput()
 
+function initGame(firstTime = false){
+	if (!firstTime){
+		gameBoard.innerHTML = ""
+	}
+	grid = new Grid(gameBoard)
+	grid.randomEmptyCell().tile = new Tile(gameBoard)
+	grid.randomEmptyCell().tile = new Tile(gameBoard)
+
+}
 function setupInput(){
 	window.addEventListener("keydown", handleInput, {once: true})
 }
@@ -153,5 +162,5 @@ function displayGameOver(){
 	gameOverContainer.appendChild(gameOverText)
 	gameOverContainer.appendChild(gameOverBtn)
 	gameBoard.appendChild(gameOverContainer)
-	gameOverBtn.addEventListener("click", ()=>{console.log("work")})
+	gameOverBtn.addEventListener("click", ()=>{initGame()})
 }
