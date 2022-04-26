@@ -104,11 +104,15 @@ class cell {
 
 	margeTiles(){
 		// don't do this when cell doesn't have tile nor another tile to marge
-		if(this.tile == null || this.margeTile == null) return
+		if(this.tile == null || this.margeTile == null){
+			return 0
+		}
 		this.tile.value = this.tile.value + this.margeTile.value
 		// delete one of tile on same cell from html
 		this.margeTile.remove()
 		this.margeTile = null
+		return this.tile.value
+
 	}
 }
 

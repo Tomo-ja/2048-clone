@@ -1,9 +1,13 @@
 import Grid from "./Grid.js"
 import Tile from "./Tile.js"
 
-const newGameBtn = document.getElementById("new-game_btn")
-newGameBtn.addEventListener("click", ()=>{initGame()})
-const gameBoard = document.getElementById("game-board")
+let bestScore = localStorage.getItem("bestScore") || 0
+
+const $bestScore = document.getElementById("best-score")
+const $newGameBtn = document.getElementById("new-game_btn")
+$newGameBtn.addEventListener("click", ()=>{initGame()})
+const $currentScore = document.getElementById("current-score")
+const $gameBoard = document.getElementById("game-board")
 let grid = null
 
 initGame(true)
@@ -12,11 +16,13 @@ setupInput()
 
 function initGame(firstTime = false){
 	if (!firstTime){
-		gameBoard.innerHTML = ""
+		$gameBoard.innerHTML = ""
 	}
-	grid = new Grid(gameBoard)
-	grid.randomEmptyCell().tile = new Tile(gameBoard)
-	grid.randomEmptyCell().tile = new Tile(gameBoard)
+	$currentScore.innerText = 0
+	$bestScore.innerText = bestScore
+	grid = new Grid($gameBoard)
+	grid.randomEmptyCell().tile = new Tile($gameBoard)
+	grid.randomEmptyCell().tile = new Tile($gameBoard)
 
 }
 function setupInput(){
@@ -61,14 +67,19 @@ async function handleInput(e){
 			return
 	}
 
-	grid.cells.forEach(cell => cell.margeTiles())
+	grid.cells.forEach(cell => {
+		let score = cell.margeTiles() + parseInt($currentScore.innerText)
+		$currentScore.innerText = score
+	})
 	// each move makes new tile
-	const newTile = new Tile(gameBoard)
+	const newTile = new Tile($gameBoard)
 	grid.randomEmptyCell().tile = newTile
 	// if user can't make any move then, lost
 	if(!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()){
 		newTile.waitForTransition(true).then(()=>{
 			displayGameOver()
+			bestScore = Math.max(parseInt($currentScore.innerText, bestScore))
+			localStorage.bestScore = bestScore
 			})
 		return
 	}
@@ -151,16 +162,16 @@ function canMove(cells){
 }
 
 function displayGameOver(){
-	const gameOverContainer = document.createElement("div")
-	gameOverContainer.classList.add("game-board_game-over")
-	const gameOverText = document.createElement("h1")
-	gameOverText.classList.add("game-board_game-over_text")
-	gameOverText.innerText = "Game Over"
-	const gameOverBtn = document.createElement("div")
-	gameOverBtn.classList.add("game-board_game-over_btn")
-	gameOverBtn.innerText = "Try again"
-	gameOverContainer.appendChild(gameOverText)
-	gameOverContainer.appendChild(gameOverBtn)
-	gameBoard.appendChild(gameOverContainer)
-	gameOverBtn.addEventListener("click", ()=>{initGame()})
+	const $gameOverContainer = document.createElement("div")
+	$gameOverContainer.classList.add("game-board_game-over")
+	const $gameOverText = document.createElement("h1")
+	$gameOverText.classList.add("game-board_game-over_text")
+	$gameOverText.innerText = "Game Over"
+	const $gameOverBtn = document.createElement("div")
+	$gameOverBtn.classList.add("game-board_game-over_btn")
+	$gameOverBtn.innerText = "Try again"
+	$gameOverContainer.appendChild($gameOverText)
+	$gameOverContainer.appendChild($gameOverBtn)
+	$gameBoard.appendChild($gameOverContainer)
+	$gameOverBtn.addEventListener("click", ()=>{initGame()})
 }
